@@ -1,0 +1,33 @@
+service: hacerPedido
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: python3.9
+  region: us-east-1
+  environment:
+    REGION: ${self:provider.region}
+    PENDING_ORDER_QUEUE:
+      Ref: PendingOrdersQueue
+    PENDING_ORDER_QUEUE_NAME: PendingOrdersQueue
+
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "sqs:SendMessage"
+      Resource: "arn:aws:sqs:${self:provider.region}:*:${self:provider.environment.PENDING_ORDER_QUEUE_NAME}"
+
+functions:
+  hacerPedido:
+    handler: handler.hacerPedido
+    events:
+      - http:
+          method: post
+          path: pedido
+
+resources:
+  Resources:
+    PendingOrdersQueue:
+      Type: "AWS::SQS::Queue"
+      Properties:
+        QueueName: ${self:provider.environment.PENDING_ORDER_QUEUE_NAME}
