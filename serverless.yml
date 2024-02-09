@@ -4,6 +4,7 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: python3.9
+  stage: dev
   region: us-east-1
   environment:
     REGION: ${self:provider.region}
@@ -12,19 +13,21 @@ provider:
     PENDING_ORDER_QUEUE_NAME: PendingOrdersQueue
     COMPLETED_ORDER_TABLE: CompletedOrderTable
 
-  iamRoleStatements: #Definicion de roles para la lambda
-    - Effect: "Allow"
-      Action:
-        - "sqs:SendMessage"
-      Resource: "arn:aws:sqs:${self:provider.region}:*:${self:provider.environment.PENDING_ORDER_QUEUE_NAME}"
-    - Effect: "Allow"
-      Action:
-        - "dynamodb:GetItem"
-        - "dynamodb:PutItem"
-        - "dynamodb:UpdateItem"
-        - "dynamodb:DeleteItem"
-      Resource:
-        - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.COMPLETED_ORDER_TABLE}"
+  iam:
+    role:
+      statements:
+        - Effect: "Allow"
+          Action:
+            - "sqs:SendMessage"
+          Resource: "arn:aws:sqs:${self:provider.region}:*:${self:provider.environment.PENDING_ORDER_QUEUE_NAME}"
+        - Effect: "Allow"
+          Action:
+            - "dynamodb:GetItem"
+            - "dynamodb:PutItem"
+            - "dynamodb:UpdateItem"
+            - "dynamodb:DeleteItem"
+          Resource:
+            - "arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.COMPLETED_ORDER_TABLE}"
 
 functions:
   hacerPedido:
@@ -33,6 +36,7 @@ functions:
       - http:
           method: post
           path: pedido
+          cors: true
   prepararPedido:
     handler: handler.prepararPedido
     events:
