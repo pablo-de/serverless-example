@@ -15,8 +15,7 @@ El proyecto se basa en el curso: [Desarrollo de aplicaciones sin servidor en AWS
 ## Estructura del Proyecto
 
 El proyecto tiene la siguiente estructura:
-.
-├── handler.py                # Código de las funciones Lambda
-├── orderMetadataManager.py   # Gestión de pedidos en DynamoDB
-└── serverless.yml            # Archivo de configuración de Serverless Framework
 
+    ├── handler.py                # Código de las funciones Lambda
+    ├── orderMetadataManager.py   # Gestión de pedidos en DynamoDB
+    └── serverless.yml            # Archivo de configuración de Serverless Framework
