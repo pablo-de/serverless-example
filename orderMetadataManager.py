@@ -43,3 +43,17 @@ def deliverOrder(orderId):
     except Exception as e:
         print("Error al entregar el pedido:", e)
         raise
+
+def getOrder(orderId):
+    print('El metodo obtener una orden fue llamado')
+
+    try:
+        response = table.get_item(
+            Key={
+                'orderId': orderId
+            }
+        )
+        return response.get('Item')
+    except Exception as e:
+        print("Error al obtener el pedido:", e)
+        raise

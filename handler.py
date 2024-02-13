@@ -67,6 +67,20 @@ def enviarPedido(event, context):
         print('is not a new record')
         return {'statusCode': 200}
 
+def estadoPedido(event, context):
+    print('Estado pedido fue llamado')
+
+    order_id = event['pathParameters']['orderId'] if 'pathParameters' in event and 'orderId' in event['pathParameters'] else None
+
+    if order_id:
+        try:
+            order = orderMetadataManager.getOrder(order_id)
+            return sendResponse(200, f"El estado de la orden {order_id} es {order['delivery_status']}")
+        except Exception as e:
+            return sendResponse(500, 'Hubo un error al procesar el pedido')
+    else:
+        return sendResponse(400, 'Falta el orderId')
+
 def sendResponse(statusCode, message):
     return {
         'statusCode': statusCode,
