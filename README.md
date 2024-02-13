@@ -3,7 +3,7 @@
 Este es un proyecto serverless en Python que proporciona una plataforma para gestionar pedidos. Utiliza servicios de AWS como Lambda, API Gateway, SQS y DynamoDB para manejar diferentes aspectos del flujo de pedidos, desde la colocación hasta la entrega.
 El proyecto se basa en el curso: [Desarrollo de aplicaciones sin servidor en AWS](https://www.udemy.com/course/serverless-en-espanol/ "Desarrollo de aplicaciones sin servidor en AWS")
 
-![serverless](img/serverless.png)
+![serverless](img/serverless1.png)
 
 ## Funcionalidades Principales
 
