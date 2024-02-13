@@ -49,6 +49,24 @@ def prepararPedido(event, context):
     except Exception as e:
         return {'statusCode': 500, 'body': str(e)}
 
+def enviarPedido(event, context):
+    print('enviarPedido fue llamada')
+
+    record = event['Records'][0]
+    if record['eventName'] == 'INSERT':
+        print('deliverOrder')
+
+        orderId = record['dynamodb']['Keys']['orderId']['S']
+
+        try:
+            orderMetadataManager.deliverOrder(orderId)
+            return {'statusCode': 200}
+        except Exception as e:
+            return {'statusCode': 500, 'body': str(e)}
+    else:
+        print('is not a new record')
+        return {'statusCode': 200}
+
 def sendResponse(statusCode, message):
     return {
         'statusCode': statusCode,

@@ -26,3 +26,20 @@ def saveCompletedOrder(order):
         # Maneja cualquier excepción que pueda ocurrir durante la operación de put
         print("Error al guardar el pedido completado:", e)
         raise
+
+def deliverOrder(orderId):
+    print('Enviar una orden fue llamado')
+
+    try:
+        response = table.update_item(
+            Key={'orderId': orderId},
+            ConditionExpression='attribute_exists(orderId)',
+            UpdateExpression='set delivery_status = :v',
+            ExpressionAttributeValues={':v': 'DELIVERED'},
+            ReturnValues='ALL_NEW'
+        )
+        print('order delivered')
+        return response['Attributes']
+    except Exception as e:
+        print("Error al entregar el pedido:", e)
+        raise
